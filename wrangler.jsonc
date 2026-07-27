@@ -1,12 +1,7 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "three-power",
   "main": "index.js",
   "compatibility_date": "2025-11-01",
-  "assets": {
-    "directory": "./public",
-    "binding": "ASSETS"
-  },
   "observability": {
     "enabled": true
   }
