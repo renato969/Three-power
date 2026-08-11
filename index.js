@@ -2812,7 +2812,7 @@ var LP_HTML = `<!DOCTYPE html>
     margin:0; background:var(--ink); color:var(--parchment);
     font-family:'Inter',sans-serif; overflow-x:hidden;
   }
-  .wrap{ max-width:720px; margin:0 auto; padding:0 20px; }
+  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
   .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.2em;
     text-transform:uppercase; color:var(--brass); }
   a{ color:inherit; }
@@ -2893,7 +2893,23 @@ var LP_HTML = `<!DOCTYPE html>
   .explainer p{ font-size:14.5px; line-height:1.75; color:var(--dim); max-width:560px; margin:0 auto 14px; }
   .explainer p:last-child{ margin-bottom:0; }
   .explainer strong{ color:var(--parchment); font-weight:600; }
-  .diagram{ display:flex; justify-content:center; margin:22px 0 26px; }
+  .diagram{ display:flex; justify-content:center; margin:36px 0 34px; }
+  @keyframes glintGold{
+    0%,88%,100%{ filter:brightness(1) drop-shadow(0 0 0 rgba(201,162,75,0)); }
+    4%{ filter:brightness(2.5) drop-shadow(0 0 6px rgba(255,224,153,.95)); }
+  }
+  @keyframes glintRed{
+    0%,88%,100%{ filter:brightness(1) drop-shadow(0 0 0 rgba(214,58,47,0)); }
+    4%{ filter:brightness(2.3) drop-shadow(0 0 6px rgba(255,140,120,.9)); }
+  }
+  .diagram .pt{ animation-duration:3.6s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; transform-box:fill-box; transform-origin:center; }
+  .diagram .pt-g{ animation-name:glintGold; }
+  .diagram .pt-r{ animation-name:glintRed; }
+  .diagram .d0{ animation-delay:0s; } .diagram .d1{ animation-delay:.4s; }
+  .diagram .d2{ animation-delay:.8s; } .diagram .d3{ animation-delay:1.2s; }
+  .diagram .d4{ animation-delay:1.6s; } .diagram .d5{ animation-delay:2s; }
+  .diagram .d6{ animation-delay:2.4s; } .diagram .d7{ animation-delay:2.8s; }
+  .diagram .d8{ animation-delay:3.2s; }
   .diagram svg{ width:220px; height:220px; }
   .legend{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin:0 auto 26px;
     max-width:420px; }
@@ -2916,7 +2932,8 @@ var LP_HTML = `<!DOCTYPE html>
   @media (max-width:640px){ .whw{ grid-template-columns:1fr; } }
 
   /* ===== SEÇÃO GERAL ===== */
-  section{ padding:64px 0; }
+  section{ padding:44px 0; }
+  @media (min-width:640px){ section{ padding:64px 0; } }
   .sec-head{ text-align:center; margin-bottom:40px; }
   .sec-icon{ width:26px; height:26px; margin:0 auto 14px; stroke:var(--brass); fill:none;
     stroke-width:1.3; stroke-linecap:round; stroke-linejoin:round; display:block; }
@@ -2970,7 +2987,14 @@ var LP_HTML = `<!DOCTYPE html>
   footer{ border-top:1px solid var(--rule); padding:28px 0 48px; text-align:center; }
   footer p{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim); margin:0; }
 
-  @media (prefers-reduced-motion:reduce){ .breathe,.choque{ animation:none !important; } }
+  @media (max-width:639px){
+    .cta-final{ padding:48px 0 56px; }
+    .explainer{ padding:32px 0; }
+    .video-block{ padding:26px 0 6px; }
+    .who{ padding:24px 0 6px; }
+  }
+
+  @media (prefers-reduced-motion:reduce){ .breathe,.choque,.pt{ animation:none !important; } }
 </style>
 </head>
 <body>
@@ -3029,15 +3053,15 @@ var LP_HTML = `<!DOCTYPE html>
         <circle cx="110" cy="110" r="88" fill="none" stroke="#4a4136" stroke-width="1"/>
         <polygon points="110,22 186.2,154 33.8,154" fill="none" stroke="#c9a24b" stroke-width="1.6"/>
         <polygon points="166.6,42.6 140.1,192.7 196.7,94.7 53.4,42.6 79.9,192.7 23.3,94.7" fill="none" stroke="#d63a2f" stroke-width="1.3"/>
-        <circle cx="110" cy="22" r="4" fill="#c9a24b"/>
-        <circle cx="186.2" cy="154" r="4" fill="#c9a24b"/>
-        <circle cx="33.8" cy="154" r="4" fill="#c9a24b"/>
-        <circle cx="166.6" cy="42.6" r="3.5" fill="#d63a2f"/>
-        <circle cx="140.1" cy="192.7" r="3.5" fill="#d63a2f"/>
-        <circle cx="196.7" cy="94.7" r="3.5" fill="#d63a2f"/>
-        <circle cx="53.4" cy="42.6" r="3.5" fill="#d63a2f"/>
-        <circle cx="79.9" cy="192.7" r="3.5" fill="#d63a2f"/>
-        <circle cx="23.3" cy="94.7" r="3.5" fill="#d63a2f"/>
+        <circle class="pt pt-g d0" cx="110" cy="22" r="4" fill="#c9a24b"/>
+        <circle class="pt pt-g d3" cx="186.2" cy="154" r="4" fill="#c9a24b"/>
+        <circle class="pt pt-g d6" cx="33.8" cy="154" r="4" fill="#c9a24b"/>
+        <circle class="pt pt-r d1" cx="166.6" cy="42.6" r="3.5" fill="#d63a2f"/>
+        <circle class="pt pt-r d4" cx="140.1" cy="192.7" r="3.5" fill="#d63a2f"/>
+        <circle class="pt pt-r d2" cx="196.7" cy="94.7" r="3.5" fill="#d63a2f"/>
+        <circle class="pt pt-r d8" cx="53.4" cy="42.6" r="3.5" fill="#d63a2f"/>
+        <circle class="pt pt-r d5" cx="79.9" cy="192.7" r="3.5" fill="#d63a2f"/>
+        <circle class="pt pt-r d7" cx="23.3" cy="94.7" r="3.5" fill="#d63a2f"/>
       </svg>
     </div>
     <div class="legend">
