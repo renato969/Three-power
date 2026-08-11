@@ -2782,6 +2782,13 @@ document.addEventListener('focusout', function(e){
     showSessionDone();
     if(novoDia || (!state.resting && state.sessions.length===0)) generateBatch();
   } else renderExercise();
+  const params=new URLSearchParams(location.search);
+  if(params.get('ir')==='enea'){
+    switchView('Enea');
+    const btnEnea=document.getElementById('eneaStart');
+    if(btnEnea && !state.enea) btnEnea.click();
+    history.replaceState(null,'',location.pathname);
+  }
 })();
 
 </script>
@@ -2794,6 +2801,18 @@ var LP_HTML = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Três Poderes: por que a pessoa concorda e não muda?</title>
+<meta name="description" content="Descubra qual dos seus três poderes, raciocínio, discernimento ou influência, está te travando. Teste gratuito baseado no Eneagrama de Gurdjieff, com treino diário focado no seu ponto fraco.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://trespoderes.app/lp">
+<meta property="og:title" content="Seus Três Poderes: descubra o que está te travando">
+<meta property="og:description" content="Descubra qual dos seus três poderes, raciocínio, discernimento ou influência, está te travando. Teste gratuito baseado no Eneagrama de Gurdjieff, com treino diário focado no seu ponto fraco.">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/renato969/Three-power@main/tres-poderes-og.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Seus Três Poderes: descubra o que está te travando">
+<meta name="twitter:description" content="Descubra qual dos seus três poderes, raciocínio, discernimento ou influência, está te travando. Teste gratuito baseado no Eneagrama de Gurdjieff.">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/renato969/Three-power@main/tres-poderes-og.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a24b' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.2' stroke-width='1.1'/%3E%3Cpath d='M12 2.8 19.9 16.6 4.1 16.6z' stroke-width='1.1'/%3E%3Cpath d='M17.9 5.2 15.1 20.6 21 10.6 6.1 5.2 8.9 20.6 3 10.6Z' stroke-width='0.9'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -3051,7 +3070,7 @@ var LP_HTML = `<!DOCTYPE html>
         <li><strong>Influência.</strong> Quando você decide e não faz acontecer, nem em você, nem no outro</li>
       </ul>
       <p class="hero-sub" style="margin-top:22px;">O eneagrama de Gurdjieff traça a anamnese completa dos seus três poderes. Baseado em leis universais, ele avalia sua capacidade de raciocínio, discernimento e influência, e mostra exatamente onde você está falhando.</p>
-      <a href="#comecar" class="btn btn-gold">Descobrir o meu em 4 minutos →</a>
+      <a href="/?ir=enea" class="btn btn-gold">Descobrir o meu em 4 minutos →</a>
       <div class="fine">Grátis · Resultado na hora · Sem cartão</div>
     </div>
   </section>
@@ -3206,7 +3225,7 @@ var LP_HTML = `<!DOCTYPE html>
           <span class="tag">Os Três Centros</span>
           <span class="tag">Os Quatro Estados</span>
         </div>
-        <a href="#comecar" class="btn btn-gold">Descobrir o meu agora →</a>
+        <a href="/?ir=enea" class="btn btn-gold">Descobrir o meu agora →</a>
       </div>
     </div>
   </section>
@@ -3214,7 +3233,7 @@ var LP_HTML = `<!DOCTYPE html>
   <section class="cta-final" id="comecar">
     <div class="wrap">
       <h2>Quatro minutos.<br>Uma resposta que você já sentia, mas não tinha nome.</h2>
-      <a href="/" class="btn btn-gold btn-wide">4 minutos, a resposta certa daquilo que te bloqueia →</a>
+      <a href="/?ir=enea" class="btn btn-gold btn-wide">4 minutos, a resposta certa daquilo que te bloqueia →</a>
       <div class="fine">trespoderes.app</div>
     </div>
   </section>
@@ -3350,10 +3369,7 @@ var index_default = {
     if (url.pathname === "/favicon.ico") return new Response(null, { status: 204 });
     if (url.pathname === "/lp" || url.pathname === "/lp/") {
       return new Response(LP_HTML, {
-        headers: {
-          "content-type": "text/html; charset=utf-8",
-          "cache-control": "no-store, no-cache, must-revalidate"
-        }
+        headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store, no-cache, must-revalidate" }
       });
     }
     return new Response(HTML, {
