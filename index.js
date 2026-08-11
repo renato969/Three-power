@@ -23,14 +23,14 @@ var HTML = `<!DOCTYPE html>
     --parchment:#f4eedf; --dim:#a89f8e;
     --oxblood:#b3231f; --oxblood-br:#d63a2f;
     --brass:#c9a24b; --brass-dim:#8a7538;
-    --good:#7ea36b; --radius:10px;
+    --good:#7ea36b; --radius:7px;
     --nav-h: 62px;
   }
   *{box-sizing:border-box;}
   html{ overflow-x:hidden; }
   body{
     margin:0; min-height:100vh; min-height:100dvh;
-    padding:24px 16px calc(var(--nav-h) + env(safe-area-inset-bottom) + 26px);
+    padding:24px 20px calc(var(--nav-h) + env(safe-area-inset-bottom) + 26px);
     background:radial-gradient(1200px 600px at 50% -10%, rgba(179,35,31,0.10), transparent 60%), var(--ink);
     color:var(--parchment); font-family:'Inter',sans-serif;
     display:flex; justify-content:center;
@@ -102,8 +102,9 @@ var HTML = `<!DOCTYPE html>
   }
 
   .card{ background:linear-gradient(180deg,var(--panel),var(--panel-2)); border:1px solid var(--rule);
-    border-radius:var(--radius); padding:24px 22px; margin-bottom:14px; position:relative; overflow:hidden; }
-  .card.hero{ border-color:rgba(201,162,75,0.28); }
+    border-radius:var(--radius); padding:26px 24px; margin-bottom:18px; position:relative; overflow:hidden;
+    box-shadow:0 18px 40px -20px rgba(0,0,0,0.65), inset 0 1px 0 rgba(244,238,223,0.04); }
+  .card.hero{ border-color:rgba(201,162,75,0.28); box-shadow:0 20px 46px -18px rgba(0,0,0,0.7), inset 0 1px 0 rgba(244,238,223,0.05); }
   .card::before{ content:""; position:absolute; top:0; left:0; right:0; height:2px;
     background:linear-gradient(90deg,transparent,var(--brass),transparent); opacity:0.55; }
   .card-title{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dim); margin:0 0 14px; }
