@@ -2818,11 +2818,14 @@ var LP_HTML = `<!DOCTYPE html>
   a{ color:inherit; }
 
   /* ===== CABEÇALHO ===== */
-  header{ padding:22px 0; }
-  .brand{ display:flex; align-items:center; justify-content:center; gap:9px; }
-  .brand svg{ width:22px; height:22px; stroke:var(--brass); fill:none; }
+  header{ position:sticky; top:0; z-index:50; padding:18px 0 14px; text-align:center;
+    background:rgba(21,17,13,0.92); backdrop-filter:blur(10px) saturate(1.15);
+    border-bottom:1px solid var(--rule); }
+  .brand{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
+  .brand-icon{ width:46px; height:46px; stroke:var(--brass); fill:none; overflow:visible; }
   .brand span{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.18em;
     text-transform:uppercase; color:var(--parchment); }
+  @media (prefers-reduced-motion:reduce){ .shine-sweep animateTransform{ display:none; } }
 
   /* ===== HERO ===== */
   .hero{ position:relative; padding:64px 0 56px; text-align:center; overflow:hidden;
@@ -2861,18 +2864,19 @@ var LP_HTML = `<!DOCTYPE html>
 
   /* ===== AUTORIDADE ===== */
   .authority{ border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
-    padding:18px 0; text-align:center; background:rgba(244,238,223,0.02); }
+    padding-top:18px; padding-bottom:18px; padding-left:24px; padding-right:24px;
+    text-align:center; background:rgba(244,238,223,0.02); }
   .authority p{ margin:0; font-size:13px; color:var(--dim); }
   .authority strong{ color:var(--parchment); font-weight:600; }
 
   /* ===== PRA QUEM É ===== */
-  .who{ padding:30px 0 6px; text-align:center; }
+  .who{ padding-top:30px; padding-bottom:6px; text-align:center; }
   .who .eyebrow{ display:block; margin-bottom:14px; }
   .tags-row{ display:flex; gap:9px; justify-content:center; flex-wrap:wrap; max-width:520px; margin:0 auto; }
   .tags-row .tag{ font-size:12px; padding:7px 14px; }
 
   /* ===== VÍDEO DO CHICO ===== */
-  .video-block{ padding:34px 0 6px; }
+  .video-block{ padding-top:34px; padding-bottom:6px; }
   .video-cap{ text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px;
     color:var(--dim); margin-bottom:14px; letter-spacing:.04em; }
   .video-frame{ position:relative; width:100%; max-width:640px; margin:0 auto; aspect-ratio:16/9;
@@ -2887,7 +2891,7 @@ var LP_HTML = `<!DOCTYPE html>
      e remove .video-frame, .play e .ph-text */
 
   /* ===== O QUE É O ENEAGRAMA ===== */
-  .explainer{ padding:40px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  .explainer{ padding-top:40px; padding-bottom:40px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
     background:rgba(244,238,223,0.015); }
   .explainer .sec-head{ margin-bottom:22px; }
   .explainer p{ font-size:14.5px; line-height:1.75; color:var(--dim); max-width:560px; margin:0 auto 14px; }
@@ -2989,9 +2993,9 @@ var LP_HTML = `<!DOCTYPE html>
 
   @media (max-width:639px){
     .cta-final{ padding:48px 0 56px; }
-    .explainer{ padding:32px 0; }
-    .video-block{ padding:26px 0 6px; }
-    .who{ padding:24px 0 6px; }
+    .explainer{ padding-top:32px; padding-bottom:32px; }
+    .video-block{ padding-top:26px; padding-bottom:6px; }
+    .who{ padding-top:24px; padding-bottom:6px; }
   }
 
   @media (prefers-reduced-motion:reduce){ .breathe,.choque,.pt{ animation:none !important; } }
@@ -3001,10 +3005,25 @@ var LP_HTML = `<!DOCTYPE html>
 
   <header>
     <div class="brand">
-      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="brand-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <defs>
+          <linearGradient id="shine" x1="-1" y1="0" x2="0" y2="0" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#fff3d6" stop-opacity="0"/>
+            <stop offset="46%" stop-color="#fff3d6" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#fff8e6" stop-opacity="1"/>
+            <stop offset="54%" stop-color="#fff3d6" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#fff3d6" stop-opacity="0"/>
+            <animateTransform attributeName="gradientTransform" type="translate" from="-1 0" to="2 0" dur="2.8s" repeatCount="indefinite"/>
+          </linearGradient>
+        </defs>
         <circle cx="12" cy="12" r="9.2" stroke-width="1.1"/>
         <path d="M12 2.8 19.9 16.6 4.1 16.6z" stroke-width="1.1"/>
         <path d="M17.9 5.2 15.1 20.6 21 10.6 6.1 5.2 8.9 20.6 3 10.6Z" stroke-width="0.9"/>
+        <g class="shine-sweep" stroke="url(#shine)" stroke-width="2.2">
+          <circle cx="12" cy="12" r="9.2"/>
+          <path d="M12 2.8 19.9 16.6 4.1 16.6z"/>
+          <path d="M17.9 5.2 15.1 20.6 21 10.6 6.1 5.2 8.9 20.6 3 10.6Z"/>
+        </g>
       </svg>
       <span>Três Poderes</span>
     </div>
