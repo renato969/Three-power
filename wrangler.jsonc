@@ -1,8 +1,17 @@
 {
-  "name": "three-power",
+  "name": "tres-poder",
   "main": "index.js",
   "compatibility_date": "2025-11-01",
   "observability": {
     "enabled": true
+  },
+  "kv_namespaces": [
+    {
+      "binding": "LEADS",
+      "id": "79bbff91d13948ac9d14a473d11b27ce"
+    }
+  ],
+  "vars": {
+    "BREVO_FROM_EMAIL": "contato@trespoderes.app"
   }
 }
