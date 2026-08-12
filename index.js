@@ -3330,6 +3330,12 @@ async function handleKiwify(request, env) {
 
   const evento = body.webhook_event_type || body.order_status || "";
   const email = (body.Customer && body.Customer.email) || (body.customer && body.customer.email) || (body.Customer && body.Customer.Email) || "";
+  console.log("kiwify webhook recebido, evento=" + evento + " email=" + (email || "(vazio)"));
+
+  if (env.LEADS) {
+    await env.LEADS.put("debug:ultimo-kiwify", corpoTexto.slice(0, 3000));
+  }
+
   if (!email) return json({ ok: true, aviso: "sem email no payload, confira o formato" });
 
   const emailNorm = String(email).trim().toLowerCase();
