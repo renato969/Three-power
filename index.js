@@ -707,6 +707,15 @@ var HTML = `<!DOCTYPE html>
         </div>
         <div id="eneaPdfMsg" class="sd-aviso" style="display:none; margin-top:12px;"></div>
 
+        <div class="card" style="margin-top:26px; text-align:center; border-color:var(--brass-dim);">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+            color:var(--ink); background:var(--brass); display:inline-block; padding:4px 10px; border-radius:20px; margin-bottom:12px;">2 meses de graça no anual</div>
+          <div style="font-family:'Fraunces',serif; font-weight:600; font-size:26px; color:var(--parchment);">R$377,70 <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--dim); font-weight:400;">/ano</span></div>
+          <div style="font-size:12px; color:var(--dim); margin:6px 0 16px;">Treino diário no seu ponto fraco, e as cinco leis do livro. Menos de R$31/mês.</div>
+          <a href="https://pay.kiwify.com.br/0gvPpju" class="btn-gold" style="display:block; text-align:center; padding:12px; border-radius:8px; text-decoration:none; margin-bottom:10px;">Assinar o ano →</a>
+          <div style="font-size:11.5px; color:var(--dim);">Prefere mês a mês? <a href="https://pay.kiwify.com.br/cfcPgdx" style="color:var(--brass);">R$37,70/mês</a></div>
+        </div>
+
         </div>
 
         <div class="btn-row" style="margin-top:18px;">
@@ -2375,7 +2384,7 @@ function aplicarGateEnea(){
 
 async function enviarRelatorioPorEmail(nome, email, opts){
   opts=opts||{};
-  const e=state.enea; if(!e) return false;
+  const e=state.enea; if(!e) return {ok:false, erro:'sem resultado carregado'};
   try{
     await carregarJsPDF();
     const doc = montarPdfEnea(e);
@@ -2386,10 +2395,10 @@ async function enviarRelatorioPorEmail(nome, email, opts){
         centro: txt('resCentro'), quebra: txt('resNota') } }) });
     const data = await res.json().catch(()=>({}));
     if(!res.ok) throw new Error(data.error || ('backend '+res.status));
-    return true;
+    return {ok:true};
   }catch(err){
     if(!opts.silencioso) console.error('Falha ao enviar relatório', err);
-    return false;
+    return {ok:false, erro: err && err.message ? err.message : 'falha desconhecida'};
   }
 }
 
@@ -2404,10 +2413,10 @@ async function submeterGate(){
   if(!emailOk){ msg.innerHTML='Digite um email válido.'; msg.style.display='block'; emailEl.focus(); return; }
 
   btn.disabled=true; const rotuloOrig=btn.textContent; btn.textContent='Enviando...';
-  const ok = await enviarRelatorioPorEmail(nome, email, {silencioso:false});
+  const resultado = await enviarRelatorioPorEmail(nome, email, {silencioso:false});
   btn.disabled=false; btn.textContent=rotuloOrig;
 
-  if(ok){
+  if(resultado.ok){
     try{ localStorage.setItem('tres-poderes-lead', JSON.stringify({nome, email})); }catch(e){}
     document.getElementById('eneaGate').style.display='none';
     document.getElementById('eneaLocked').style.display='block';
@@ -2415,7 +2424,10 @@ async function submeterGate(){
     document.getElementById('eneaEnviadoTxt').textContent='Relatório enviado para '+email+'. Confira também a caixa de spam.';
     enviado.style.display='block';
   } else {
-    msg.innerHTML='<strong>Não consegui enviar agora.</strong> Confira o email digitado e tente de novo.';
+    const motivo = resultado.erro && resultado.erro.includes('dominio de email nao recebe')
+      ? 'Esse email não parece existir. Confira se digitou certo.'
+      : 'Não consegui enviar agora. Confira o email digitado e tente de novo.';
+    msg.innerHTML='<strong>'+motivo+'</strong>';
     msg.style.display='block';
   }
 }
@@ -3000,6 +3012,16 @@ var LP_HTML = `<!DOCTYPE html>
   .upsell h3{ font-family:'Fraunces',serif; font-weight:600; font-size:24px; margin:0 0 12px; }
   .upsell p{ color:var(--dim); font-size:14.5px; line-height:1.7; max-width:440px; margin:0 auto 24px; }
   .upsell-tags{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
+  .price-card{ background:rgba(201,162,75,0.06); border:1px solid var(--brass-dim); border-radius:var(--radius);
+    padding:22px 20px; margin-bottom:22px; text-align:center; }
+  .price-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:var(--brass);
+    padding:4px 10px; border-radius:20px; margin-bottom:12px; }
+  .price-main{ font-family:'Fraunces',serif; font-weight:600; font-size:28px; color:var(--parchment); }
+  .price-main span{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--dim); font-weight:400; }
+  .price-sub{ font-size:12.5px; color:var(--dim); margin:6px 0 16px; }
+  .price-alt{ font-size:12px; color:var(--dim); margin-top:14px; }
+  .price-alt a{ color:var(--brass); text-decoration:underline; }
   .tag{ font-family:'IBM Plex Mono',monospace; font-size:11px; padding:6px 12px; border-radius:20px;
     border:1px solid var(--rule); color:var(--dim); }
 
@@ -3226,6 +3248,13 @@ var LP_HTML = `<!DOCTYPE html>
           <span class="tag">Os Três Centros</span>
           <span class="tag">Os Quatro Estados</span>
         </div>
+        <div class="price-card">
+          <span class="price-badge">2 meses de graça no anual</span>
+          <div class="price-main">R$377,70<span> /ano</span></div>
+          <div class="price-sub">equivale a menos de R$31/mês, cobrado uma vez só</div>
+          <a href="https://pay.kiwify.com.br/0gvPpju" class="btn btn-gold">Assinar o ano →</a>
+          <div class="price-alt">Prefere mês a mês? <a href="https://pay.kiwify.com.br/cfcPgdx">R$37,70/mês, sem compromisso</a></div>
+        </div>
         <a href="/?ir=enea" class="btn btn-gold">Descobrir o meu agora →</a>
       </div>
     </div>
@@ -3253,6 +3282,72 @@ function json(obj, status = 200) {
   });
 }
 __name(json, "json");
+async function temMX(dominio) {
+  try {
+    const res = await fetch("https://cloudflare-dns.com/dns-query?name=" + encodeURIComponent(dominio) + "&type=MX", {
+      headers: { accept: "application/dns-json" }
+    });
+    if (!res.ok) return true;
+    const data = await res.json();
+    return Array.isArray(data.Answer) && data.Answer.length > 0;
+  } catch (e) {
+    return true;
+  }
+}
+__name(temMX, "temMX");
+
+async function assinaturaKiwifyValida(corpoTexto, assinaturaRecebida, token) {
+  if (!token || !assinaturaRecebida) return false;
+  try {
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey("raw", enc.encode(token), { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
+    const sigBuffer = await crypto.subtle.sign("HMAC", key, enc.encode(corpoTexto));
+    const hex = Array.from(new Uint8Array(sigBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    return hex === assinaturaRecebida;
+  } catch (e) {
+    return false;
+  }
+}
+__name(assinaturaKiwifyValida, "assinaturaKiwifyValida");
+
+async function handleKiwify(request, env) {
+  if (request.method !== "POST") return json({ error: "use POST" }, 405);
+  const url = new URL(request.url);
+  const assinatura = url.searchParams.get("signature") || "";
+  const corpoTexto = await request.text();
+
+  if (env.KIWIFY_WEBHOOK_TOKEN) {
+    const ok = await assinaturaKiwifyValida(corpoTexto, assinatura, env.KIWIFY_WEBHOOK_TOKEN);
+    if (!ok) return json({ error: "assinatura invalida" }, 401);
+  }
+
+  let body;
+  try {
+    body = JSON.parse(corpoTexto);
+  } catch (e) {
+    return json({ error: "corpo invalido" }, 400);
+  }
+
+  const evento = body.webhook_event_type || body.order_status || "";
+  const email = (body.Customer && body.Customer.email) || (body.customer && body.customer.email) || (body.Customer && body.Customer.Email) || "";
+  if (!email) return json({ ok: true, aviso: "sem email no payload, confira o formato" });
+
+  const emailNorm = String(email).trim().toLowerCase();
+
+  if (env.LEADS) {
+    const chave = "pago:" + emailNorm;
+    const pago = /aprovad|paid/i.test(String(evento));
+    const revogado = /reembols|chargeback|cancel/i.test(String(evento));
+    if (pago) {
+      await env.LEADS.put(chave, JSON.stringify({ status: "ativo", evento, atualizadoEm: new Date().toISOString() }));
+    } else if (revogado) {
+      await env.LEADS.put(chave, JSON.stringify({ status: "revogado", evento, atualizadoEm: new Date().toISOString() }));
+    }
+  }
+  return json({ ok: true, evento, email: emailNorm });
+}
+__name(handleKiwify, "handleKiwify");
+
 async function handleLead(request, env) {
   if (request.method !== "POST") return json({ error: "use POST" }, 405);
   let body;
@@ -3265,6 +3360,9 @@ async function handleLead(request, env) {
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase().slice(0, 200) : "";
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!nome || !emailOk) return json({ error: "nome ou email invalido" }, 400);
+  const dominio = email.split("@")[1];
+  const dominioTemMX = await temMX(dominio);
+  if (!dominioTemMX) return json({ error: "esse dominio de email nao recebe mensagens, confira o email digitado" }, 400);
   const pdfBase64 = typeof body.pdfBase64 === "string" ? body.pdfBase64 : "";
   const nomeArquivo = typeof body.nomeArquivo === "string" ? body.nomeArquivo.slice(0, 120) : "anamnese.pdf";
   const resumo = body.resumo && typeof body.resumo === "object" ? body.resumo : {};
@@ -3373,6 +3471,7 @@ var index_default = {
         headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store, no-cache, must-revalidate" }
       });
     }
+    if (url.pathname === "/api/kiwify") return handleKiwify(request, env);
     return new Response(HTML, {
       headers: {
         "content-type": "text/html; charset=utf-8",
