@@ -311,6 +311,9 @@ var HTML = `<!DOCTYPE html>
   .ficha dt{ font-family:'IBM Plex Mono',monospace; font-size:8.5px; letter-spacing:0.1em;
     text-transform:uppercase; color:var(--dim); margin-bottom:3px; }
   .ficha dd{ margin:0; font-size:12.5px; color:var(--parchment); line-height:1.35; }
+  .ficha-glossario{ font-size:11px; line-height:1.6; color:var(--dim); margin:-8px 0 16px; padding:10px 12px;
+    background:rgba(244,238,223,0.02); border-radius:8px; border:1px solid var(--rule); }
+  .ficha-glossario b{ color:var(--brass); font-weight:600; }
   .bloco{ padding:13px 15px; border-radius:8px; margin:0 0 14px; border-left:2px solid; }
   .bloco.sintoma{ background:rgba(179,35,31,0.07); border-color:var(--oxblood); }
   .bloco.origem{ background:rgba(201,162,75,0.06); border-color:var(--brass-dim); }
@@ -740,6 +743,9 @@ var HTML = `<!DOCTYPE html>
         <div class="anam">
           <h4>Ficha do centro</h4>
           <dl class="ficha" id="fichaCentro"></dl>
+          <div class="ficha-glossario">
+            <b>O que significa cada campo:</b> Função é o que esse centro faz por você. Alimento é o que ele processa pra funcionar bem. Sede de comando é onde ele fica baseado no corpo. Densidade vem da cosmologia do livro, um número que mede o quão sutil é a matéria que esse centro usa, quanto menor o número, mais fino; "material solar" significa que ele opera numa matéria tão fina quanto a do próprio Sol, nesse sistema. Êxito é o resultado que ele entrega quando funciona bem. Desempenho é a qualidade que ele desenvolve com o uso. Maior revelação é o insight mais alto que ele pode te dar.
+          </div>
           <p class="lead" id="anamCentro"></p>
           <p id="anamCentroLim"></p>
           <div class="bloco sintoma"><div class="rot">Risco deste perfil</div><p id="anamCentroRisco"></p></div>
