@@ -3610,11 +3610,12 @@ async function handleKiwify(request, env) {
   }
 
   const evento = body.webhook_event_type || body.order_status || "";
-  const email = (body.Customer && body.Customer.email) || (body.customer && body.customer.email) || (body.Customer && body.Customer.Email) || "";
+  const email = (body.Customer && body.Customer.email) || (body.customer && body.customer.email) || (body.Customer && body.Customer.Email) || (body.customer_email) || "";
   console.log("kiwify webhook recebido, evento=" + evento + " email=" + (email || "(vazio)"));
 
   if (env.LEADS) {
-    await env.LEADS.put("debug:ultimo-kiwify", corpoTexto.slice(0, 3000));
+    await env.LEADS.put("debug:ultimo-kiwify", corpoTexto);
+    await env.LEADS.put("debug:ultimo-kiwify-lido", JSON.stringify({ evento, email, quandoChegou: new Date().toISOString() }));
   }
 
   if (!email) return json({ ok: true, aviso: "sem email no payload, confira o formato" });
