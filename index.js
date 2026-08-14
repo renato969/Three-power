@@ -452,6 +452,15 @@ var HTML = `<!DOCTYPE html>
 </style>
 </head>
 <body>
+<div class="paywall-overlay" id="boasVindasOverlay">
+  <div class="paywall-card" style="text-align:center;">
+    <div style="font-size:32px; margin-bottom:8px;">🎉</div>
+    <div style="font-family:'Fraunces',serif; font-weight:600; font-size:21px; color:var(--parchment); margin-bottom:8px;" id="boasVindasNome">Parabéns!</div>
+    <div style="font-size:13.5px; color:var(--dim); margin-bottom:22px; line-height:1.5;">Agora você pode treinar diariamente os seus poderes.</div>
+    <button id="boasVindasFechar" class="btn-gold" style="display:block; width:100%; padding:13px; border-radius:8px; border:none; font-family:'Inter',sans-serif; font-weight:600; font-size:14px;">Começar agora →</button>
+  </div>
+</div>
+
 <div class="paywall-overlay" id="paywallOverlay">
   <div class="paywall-card">
     <button class="paywall-close" id="paywallClose">✕</button>
@@ -3006,6 +3015,18 @@ document.addEventListener('focusout', function(e){
   document.getElementById('paywallOverlay').addEventListener('click', function(ev){
     if(ev.target.id==='paywallOverlay') fecharPaywall();
   });
+  function mostrarBoasVindas(){
+    try{ if(localStorage.getItem('tp-boas-vindas-mostrado')==='1') return; }catch(e){}
+    let nome='';
+    try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) nome=(JSON.parse(raw).nome||'').trim().split(' ')[0]; }catch(e){}
+    document.getElementById('boasVindasNome').textContent = nome ? ('Parabéns, '+nome+'!') : 'Parabéns!';
+    document.getElementById('boasVindasOverlay').classList.add('show');
+    try{ localStorage.setItem('tp-boas-vindas-mostrado','1'); }catch(e){}
+  }
+  document.getElementById('boasVindasFechar').addEventListener('click', function(){
+    document.getElementById('boasVindasOverlay').classList.remove('show');
+  });
+
   async function checarStatusAssinatura(){
     let email='';
     try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) email=(JSON.parse(raw).email||''); }catch(e){}
@@ -3023,6 +3044,7 @@ document.addEventListener('focusout', function(e){
     ASSINANTE = await checarStatusAssinatura();
     PAGAMENTO_CHECADO=true;
     atualizarAvisosBloqueio();
+    if(ASSINANTE) mostrarBoasVindas();
   })();
 
   function atualizarAvisosBloqueio(){
@@ -3048,7 +3070,7 @@ document.addEventListener('focusout', function(e){
       ASSINANTE=true; PAGAMENTO_CHECADO=true; atualizarAvisosBloqueio();
       msg.style.color='var(--good)';
       msg.textContent='Confirmado! Pode fechar e usar o treino.';
-      setTimeout(fecharPaywall, 1400);
+      setTimeout(function(){ fecharPaywall(); mostrarBoasVindas(); }, 1000);
     } else {
       msg.style.color='var(--dim)';
       msg.textContent='Ainda não encontrei a confirmação. Se acabou de pagar, espera um minuto e tenta de novo.';
@@ -3657,8 +3679,8 @@ async function handleKiwify(request, env) {
 
   if (env.LEADS) {
     const chave = "pago:" + emailNorm;
-    const pago = /aprovad|paid/i.test(String(evento));
-    const revogado = /reembols|chargeback|cancel/i.test(String(evento));
+    const pago = /aprovad|paid|approv/i.test(String(evento));
+    const revogado = /reembols|refund|chargeback|cancel/i.test(String(evento));
     if (pago) {
       await env.LEADS.put(chave, JSON.stringify({ status: "ativo", evento, atualizadoEm: new Date().toISOString() }));
     } else if (revogado) {
