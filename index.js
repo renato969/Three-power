@@ -489,7 +489,7 @@ var HTML = `<!DOCTYPE html>
     <div class="lock-teaser" id="treinoLockBanner">
       <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5" stroke-width="1.4"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-width="1.4"/></svg>
       <div class="body">
-        <b>O treino diário é da assinatura</b>
+        <b>Assine e treine no seu ponto exato, todos os dias</b>
         <p>Gera exercícios todo dia mirando exatamente o seu ponto mais fraco entre raciocínio, discernimento e influência, a partir do seu próprio diagnóstico. Não é genérico.</p>
         <button id="treinoLockBtn">Ver planos →</button>
       </div>
@@ -620,7 +620,7 @@ var HTML = `<!DOCTYPE html>
     <div class="lock-teaser" id="leisLockBanner">
       <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5" stroke-width="1.4"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-width="1.4"/></svg>
       <div class="body">
-        <b>Domine as Leis é da assinatura</b>
+        <b>Assine e domine as leis universais</b>
         <p>Os cinco pilares do livro completos: Lei de Três, Lei da Oitava, Lei do Retorno, os Três Centros, e os Quatro Estados de consciência.</p>
         <button id="leisLockBtn">Ver planos →</button>
       </div>
@@ -1487,6 +1487,25 @@ function montarPdfEnea(e){
   par(txt('anamCentro'));
   par(txt('anamCentroLim'));
   par('Risco deste perfil: '+txt('anamCentroRisco'));
+
+  (function fichaCentroPdf(){
+    const C=CENTRO_DEEP[e.centro]; if(!C) return;
+    const campos=[['Função',C.funcao],['Alimento',C.alimento],['Sede de comando',C.sede],['Densidade',C.densidade],
+      ['Êxito',C.exito],['Desempenho',C.desempenho],['Maior revelação',C.revelacao]];
+    novaPaginaSeNecessario(140);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...COR_BRASS);
+    campos.forEach(c=>{
+      novaPaginaSeNecessario(24);
+      doc.text(c[0].toUpperCase(), M, y);
+      doc.setFont('helvetica','normal'); doc.setTextColor(...COR_TXT); doc.setFontSize(10.5);
+      const linhas=doc.splitTextToSize(String(c[1]), W-140);
+      doc.text(linhas, M+140, y);
+      y += Math.max(16, linhas.length*13);
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...COR_BRASS);
+    });
+    y+=6;
+    par('O que significa cada campo: Função é o que esse centro faz por você. Alimento é o que ele processa pra funcionar bem. Sede de comando é onde ele fica baseado no corpo. Densidade vem da cosmologia do livro, um número que mede o quão sutil é a matéria que esse centro usa, quanto menor o número, mais fino; "material solar" significa que ele opera numa matéria tão fina quanto a do próprio Sol, nesse sistema. Êxito é o resultado que ele entrega quando funciona bem. Desempenho é a qualidade que ele desenvolve com o uso. Maior revelação é o insight mais alto que ele pode te dar.', {dim:true});
+  })();
 
   h('Distribuição dos três centros');
   const cc=e.centros||{mental:0,emocional:0,corporal:0};
@@ -3005,21 +3024,25 @@ document.addEventListener('focusout', function(e){
 
   (function initInstallBanner(){
     const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    if(standalone) return;
-    try{ if(localStorage.getItem('tp-install-dispensado')==='1') return; }catch(e){}
+    if(standalone){ try{ localStorage.setItem('tp-install-status','instalado'); }catch(e){} return; }
+    try{ if(localStorage.getItem('tp-install-status')==='instalado') return; }catch(e){}
+    let ultimoAdiado=0;
+    try{ ultimoAdiado=parseInt(localStorage.getItem('tp-install-adiado')||'0',10); }catch(e){}
+    const seteDias=7*24*60*60*1000;
+    if(Date.now()-ultimoAdiado < seteDias) return;
     const banner=document.getElementById('installBanner'), txt=document.getElementById('installTxt'),
       btn=document.getElementById('installBtn'), close=document.getElementById('installClose');
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
     let deferredPrompt=null;
-    function fechar(){
+    function adiar(){
       banner.classList.remove('show');
-      try{ localStorage.setItem('tp-install-dispensado','1'); }catch(e){}
+      try{ localStorage.setItem('tp-install-adiado', String(Date.now())); }catch(e){}
     }
-    close.addEventListener('click', fechar);
+    close.addEventListener('click', adiar);
     if(isIOS){
       txt.innerHTML='<b>Instale o app.</b> Toque em compartilhar, depois "Adicionar à Tela de Início".';
       btn.textContent='Entendi';
-      btn.addEventListener('click', fechar);
+      btn.addEventListener('click', adiar);
       setTimeout(()=>banner.classList.add('show'), 1200);
     } else {
       window.addEventListener('beforeinstallprompt', (e)=>{
@@ -3028,11 +3051,16 @@ document.addEventListener('focusout', function(e){
         setTimeout(()=>banner.classList.add('show'), 1200);
       });
       btn.addEventListener('click', async ()=>{
-        if(!deferredPrompt) return fechar();
+        if(!deferredPrompt) return adiar();
         deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
+        const escolha=await deferredPrompt.userChoice;
         deferredPrompt=null;
-        fechar();
+        if(escolha && escolha.outcome==='accepted'){
+          try{ localStorage.setItem('tp-install-status','instalado'); }catch(e){}
+          banner.classList.remove('show');
+        } else {
+          adiar();
+        }
       });
     }
   })();
