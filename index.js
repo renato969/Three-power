@@ -3501,21 +3501,14 @@ var LP_HTML = `<!DOCTYPE html>
     <div class="wrap" style="max-width:560px;">
       <div class="upsell">
         <span class="eyebrow">Depois do resultado</span>
-        <h3 style="margin-top:12px;">Sua avaliação completa, e um treino que evolui com você</h3>
-        <p>Você recebe uma avaliação completa dos seus pontos fortes e fracos. Depois, tem acesso a um treino diário que trabalha o seu ponto mais fraco e evolui os pontos que já são fortes, para nenhum dos dois ficar parado. E o módulo Domine as Leis cobre as cinco leis fundamentais do livro, uma a uma.</p>
+        <h3 style="margin-top:12px;">O diagnóstico chega no seu email</h3>
+        <p>Você recebe por email a avaliação completa, mostrando onde sua oitava quebra. E pode seguir num treino diário que trabalha exatamente esse ponto, entre raciocínio, discernimento e influência, todos os dias.</p>
         <div class="upsell-tags">
           <span class="tag">Lei de Três</span>
           <span class="tag">Lei da Oitava</span>
           <span class="tag">Lei do Retorno</span>
           <span class="tag">Os Três Centros</span>
           <span class="tag">Os Quatro Estados</span>
-        </div>
-        <div class="price-card">
-          <span class="price-badge">2 meses de graça no anual</span>
-          <div class="price-main">R$377,70<span> /ano</span></div>
-          <div class="price-sub">equivale a menos de R$31/mês, cobrado uma vez só</div>
-          <a href="https://pay.kiwify.com.br/0gvPpju" class="btn btn-gold">Assinar o ano →</a>
-          <div class="price-alt">Prefere mês a mês? <a href="https://pay.kiwify.com.br/cfcPgdx">R$37,70/mês, sem compromisso</a></div>
         </div>
         <a href="/?ir=enea" class="btn btn-gold">Descobrir o meu agora →</a>
       </div>
