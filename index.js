@@ -454,8 +454,8 @@ var HTML = `<!DOCTYPE html>
     <button class="paywall-close" id="paywallClose">✕</button>
     <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
       color:var(--ink); background:var(--brass); display:inline-block; padding:4px 10px; border-radius:20px; margin-bottom:14px;">2 meses de graça no anual</div>
-    <div style="font-family:'Fraunces',serif; font-weight:600; font-size:22px; color:var(--parchment); margin-bottom:6px;">Esse exercício é da assinatura</div>
-    <div style="font-size:13px; color:var(--dim); margin-bottom:18px;">O treino diário e as cinco leis do livro ficam liberados pra quem assina. O Eneagrama continua grátis, sempre.</div>
+    <div style="font-family:'Fraunces',serif; font-weight:600; font-size:22px; color:var(--parchment); margin-bottom:6px;">Resolva seus pontos fracos, evolua os fortes</div>
+    <div style="font-size:13px; color:var(--dim); margin-bottom:18px;">Treine as leis universais todos os dias, com exercícios diários e as cinco leis do livro. O Eneagrama continua grátis, sempre.</div>
     <div style="font-family:'Fraunces',serif; font-weight:600; font-size:24px; color:var(--parchment);">R$377,70 <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim); font-weight:400;">/ano</span></div>
     <div style="font-size:11px; color:var(--dim); margin:4px 0 16px;">menos de R$31/mês, cobrado uma vez só</div>
     <a href="https://pay.kiwify.com.br/0gvPpju" target="_blank" class="btn-gold" style="display:block; text-align:center; padding:13px; border-radius:8px; text-decoration:none; margin-bottom:10px;">Assinar o ano →</a>
@@ -2946,7 +2946,7 @@ document.addEventListener('focusout', function(e){
   }
 
   let ASSINANTE=false, PAGAMENTO_CHECADO=false;
-  function precisaAssinar(){ return PAGAMENTO_CHECADO && !ASSINANTE; }
+  function precisaAssinar(){ return !ASSINANTE; }
   function leadEmailAtual(){
     try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) return JSON.parse(raw).email||''; }catch(e){}
     return '';
