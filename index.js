@@ -1791,6 +1791,7 @@ function renderExercise(){
   state.running=false; state.elapsedMs=0; clearInterval(state.timerInterval);
 }
 function startTimer(){
+  if(window.precisaAssinar && window.precisaAssinar()){ if(window.mostrarPaywall) window.mostrarPaywall(); return; }
   const ex=currentExercise(); if(!ex) return;
   if(state.running){ if(ex.type!=='multipla') submitAnswer(); return; }
   state.running=true; state.startTime=Date.now()-state.elapsedMs;
@@ -1808,6 +1809,7 @@ function startTimer(){
 function tempoBand(ms){ const s=ms/1000; if(s<45) return 3; if(s<=120) return 2; if(s<=240) return 1; return 0; }
 
 function handleChoice(idx){
+  if(window.precisaAssinar && window.precisaAssinar()){ if(window.mostrarPaywall) window.mostrarPaywall(); return; }
   clearInterval(state.timerInterval); state.running=false;
   document.getElementById('timerDisplay').className='timer stopped';
   const ex=currentExercise(), sh=state.exShuf;
@@ -2186,6 +2188,7 @@ function renderModItem(){
   }
 }
 function modChoice(idx){
+  if(window.precisaAssinar && window.precisaAssinar()){ if(window.mostrarPaywall) window.mostrarPaywall(); return; }
   const it=modItens(state.modAtual)[state.modIdx], sh=state.modShuf;
   const corr= sh? sh.correta : it.correctIndex;
   document.querySelectorAll('#modChoices .choice-btn').forEach((b,i)=>{
@@ -2196,6 +2199,7 @@ function modChoice(idx){
   if(ok) marcarModItem();
 }
 async function modSubmit(){
+  if(window.precisaAssinar && window.precisaAssinar()){ if(window.mostrarPaywall) window.mostrarPaywall(); return; }
   const it=modItens(state.modAtual)[state.modIdx];
   const txt=document.getElementById('modInput').value.trim();
   if(!txt){ document.getElementById('modInput').placeholder='Escreva alguma coisa antes de responder.'; return; }
@@ -2953,6 +2957,7 @@ document.addEventListener('focusout', function(e){
 
   let ASSINANTE=false, PAGAMENTO_CHECADO=false;
   function precisaAssinar(){ return !ASSINANTE; }
+  window.precisaAssinar = precisaAssinar;
   function leadEmailAtual(){
     try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) return JSON.parse(raw).email||''; }catch(e){}
     return '';
@@ -2970,6 +2975,7 @@ document.addEventListener('focusout', function(e){
     }catch(e){ /* silencioso, nao trava o uso do app */ }
   }
   function mostrarPaywall(){ document.getElementById('paywallOverlay').classList.add('show'); }
+  window.mostrarPaywall = mostrarPaywall;
   function fecharPaywall(){ document.getElementById('paywallOverlay').classList.remove('show'); }
   document.getElementById('paywallClose').addEventListener('click', fecharPaywall);
   document.getElementById('paywallOverlay').addEventListener('click', function(ev){
