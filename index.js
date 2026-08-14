@@ -50,6 +50,15 @@ var HTML = `<!DOCTYPE html>
     border:1px solid var(--brass-dim); border-radius:12px; padding:28px 24px; text-align:center;
     box-shadow:0 24px 60px -16px rgba(0,0,0,.8); }
   .paywall-close{ position:absolute; top:10px; right:12px; background:none; border:none; color:var(--dim); font-size:18px; }
+  .lock-teaser{ display:none; background:linear-gradient(180deg,rgba(201,162,75,0.08),rgba(201,162,75,0.02));
+    border:1px solid var(--brass-dim); border-radius:var(--radius); padding:16px 16px; margin-bottom:16px; }
+  .lock-teaser.show{ display:flex; gap:12px; align-items:flex-start; }
+  .lock-teaser svg{ width:24px; height:24px; stroke:var(--brass); fill:none; flex-shrink:0; margin-top:2px; }
+  .lock-teaser .body{ flex:1; }
+  .lock-teaser .body b{ color:var(--parchment); font-size:13.5px; }
+  .lock-teaser .body p{ margin:4px 0 10px; font-size:12px; color:var(--dim); line-height:1.5; }
+  .lock-teaser button{ font-family:'Inter',sans-serif; font-size:12px; font-weight:600; color:#241b14;
+    background:var(--brass); border:none; padding:8px 14px; border-radius:6px; }
   *{box-sizing:border-box;}
   html{ overflow-x:hidden; }
   body{
@@ -474,6 +483,15 @@ var HTML = `<!DOCTYPE html>
       <div style="margin-top:8px;"><span class="api-badge" id="apiBadge"></span><span class="ver-tag" id="verTag">v2.3</span></div>
     </header>
 
+    <div class="lock-teaser" id="treinoLockBanner">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5" stroke-width="1.4"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-width="1.4"/></svg>
+      <div class="body">
+        <b>O treino diário é da assinatura</b>
+        <p>Gera exercícios todo dia mirando exatamente o seu ponto mais fraco entre raciocínio, discernimento e influência, a partir do seu próprio diagnóstico. Não é genérico.</p>
+        <button id="treinoLockBtn">Ver planos →</button>
+      </div>
+    </div>
+
     <div class="topbar">
       <div class="topbar-inner">
         <div class="ring-cell">
@@ -595,6 +613,15 @@ var HTML = `<!DOCTYPE html>
       <h1>Domine os 3 Poderes</h1>
       <div class="sub-h">As leis que governam fenômenos, processos e resultados</div>
     </header>
+
+    <div class="lock-teaser" id="leisLockBanner">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5" stroke-width="1.4"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-width="1.4"/></svg>
+      <div class="body">
+        <b>Domine as Leis é da assinatura</b>
+        <p>Os cinco pilares do livro completos: Lei de Três, Lei da Oitava, Lei do Retorno, os Três Centros, e os Quatro Estados de consciência.</p>
+        <button id="leisLockBtn">Ver planos →</button>
+      </div>
+    </div>
 
     <div id="leisIndex">
       <div class="banner" id="leisBanner">Cinco módulos. Estude o resumo, depois responda. O que você acerta sai da lista.</div>
@@ -760,13 +787,26 @@ var HTML = `<!DOCTYPE html>
         </div>
         <div id="eneaPdfMsg" class="sd-aviso" style="display:none; margin-top:12px;"></div>
 
-        <div class="card" style="margin-top:26px; text-align:center; border-color:var(--brass-dim);">
-          <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
-            color:var(--ink); background:var(--brass); display:inline-block; padding:4px 10px; border-radius:20px; margin-bottom:12px;">2 meses de graça no anual</div>
-          <div style="font-family:'Fraunces',serif; font-weight:600; font-size:26px; color:var(--parchment);">R$377,70 <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--dim); font-weight:400;">/ano</span></div>
-          <div style="font-size:12px; color:var(--dim); margin:6px 0 16px;">Treino diário no seu ponto fraco, e as cinco leis do livro. Menos de R$31/mês.</div>
-          <a href="https://pay.kiwify.com.br/0gvPpju" class="btn-gold" style="display:block; text-align:center; padding:12px; border-radius:8px; text-decoration:none; margin-bottom:10px;">Assinar o ano →</a>
-          <div style="font-size:11.5px; color:var(--dim);">Prefere mês a mês? <a href="https://pay.kiwify.com.br/cfcPgdx" style="color:var(--brass);">R$37,70/mês</a></div>
+        <div class="card" style="margin-top:26px; border-color:var(--brass-dim);">
+          <div style="text-align:center; margin-bottom:16px;">
+            <div style="font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment); margin-bottom:6px;">O treino que mira o seu ponto exato</div>
+            <div style="font-size:12.5px; color:var(--dim); line-height:1.5;" id="pvPersonalTxt">O treino diário trabalha exatamente onde você trava, todo dia.</div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="border:1px solid var(--rule); border-radius:8px; padding:14px 10px; text-align:center;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Mensal</div>
+              <div style="font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment);">R$37,70</div>
+              <div style="font-size:10px; color:var(--dim); margin-bottom:10px;">por mês</div>
+              <a href="https://pay.kiwify.com.br/cfcPgdx" style="display:block; text-align:center; padding:9px; border-radius:7px; border:1px solid var(--brass-dim); color:var(--brass); text-decoration:none; font-size:12px; font-weight:600;">Assinar →</a>
+            </div>
+            <div style="border:1.5px solid var(--brass); border-radius:8px; padding:14px 10px; text-align:center; position:relative; background:rgba(201,162,75,0.06);">
+              <div style="position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:var(--brass); color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:8px; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:10px; white-space:nowrap;">2 meses grátis</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--brass); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; margin-top:4px;">Anual</div>
+              <div style="font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment);">R$377,70</div>
+              <div style="font-size:10px; color:var(--dim); margin-bottom:10px;">menos de R$31/mês</div>
+              <a href="https://pay.kiwify.com.br/0gvPpju" class="btn-gold" style="display:block; text-align:center; padding:9px; border-radius:7px; text-decoration:none; font-size:12px; font-weight:600;">Assinar →</a>
+            </div>
+          </div>
         </div>
 
         </div>
@@ -2449,6 +2489,11 @@ function aplicarGateEnea(){
   const lead=leadSalvo();
   const gate=document.getElementById('eneaGate'), locked=document.getElementById('eneaLocked'),
         enviado=document.getElementById('eneaEnviado');
+  const e=state.enea, pv=document.getElementById('pvPersonalTxt');
+  if(pv && e && e.centro && e.quebra){
+    const C=CENTRO_DEEP[e.centro], N=NOTA_INFO[e.quebra];
+    pv.textContent='Seu centro predominante é o '+C.nome.replace('Centro ','')+', e você trava em '+e.quebra+' ('+N.nome+'). O treino diário mira esse ponto exato, todos os dias, não um genérico pra qualquer pessoa.';
+  }
   if(lead && lead.email){
     gate.style.display='none';
     locked.style.display='block';
@@ -2927,14 +2972,24 @@ document.addEventListener('focusout', function(e){
   (async function checarAssinatura(){
     let email='';
     try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) email=(JSON.parse(raw).email||''); }catch(e){}
-    if(!email){ PAGAMENTO_CHECADO=true; return; }
+    if(!email){ PAGAMENTO_CHECADO=true; atualizarAvisosBloqueio(); return; }
     try{
       const res=await fetch('/api/status?email='+encodeURIComponent(email));
       const data=await res.json();
       ASSINANTE=!!data.pago;
     }catch(e){ ASSINANTE=false; }
     PAGAMENTO_CHECADO=true;
+    atualizarAvisosBloqueio();
   })();
+
+  function atualizarAvisosBloqueio(){
+    if(!PAGAMENTO_CHECADO) return;
+    const mostrar = !ASSINANTE;
+    document.getElementById('treinoLockBanner').classList.toggle('show', mostrar);
+    document.getElementById('leisLockBanner').classList.toggle('show', mostrar);
+  }
+  document.getElementById('treinoLockBtn').addEventListener('click', mostrarPaywall);
+  document.getElementById('leisLockBtn').addEventListener('click', mostrarPaywall);
 
   (function initInstallBanner(){
     const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
