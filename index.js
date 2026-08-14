@@ -463,6 +463,12 @@ var HTML = `<!DOCTYPE html>
     <div style="font-size:11px; color:var(--dim); margin:4px 0 16px;">menos de R$31/mês, cobrado uma vez só</div>
     <a href="https://pay.kiwify.com.br/0gvPpju" target="_blank" class="btn-gold" style="display:block; text-align:center; padding:13px; border-radius:8px; text-decoration:none; margin-bottom:10px;">Assinar o ano →</a>
     <div style="font-size:11.5px; color:var(--dim);">Prefere mês a mês? <a href="https://pay.kiwify.com.br/cfcPgdx" target="_blank" style="color:var(--brass);">R$37,70/mês</a></div>
+    <div style="border-top:1px solid var(--rule); margin-top:16px; padding-top:14px;">
+      <div style="font-size:11px; color:var(--dim); margin-bottom:8px;">Já assinou? A confirmação às vezes demora alguns segundos.</div>
+      <button id="jaAssineiBtn" style="width:100%; background:none; border:1px solid var(--brass-dim); color:var(--brass);
+        font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; padding:10px; border-radius:7px;">Já assinei, verificar agora</button>
+      <div id="jaAssineiMsg" style="font-size:11px; color:var(--dim); margin-top:8px; display:none;"></div>
+    </div>
   </div>
 </div>
 
@@ -3000,15 +3006,21 @@ document.addEventListener('focusout', function(e){
   document.getElementById('paywallOverlay').addEventListener('click', function(ev){
     if(ev.target.id==='paywallOverlay') fecharPaywall();
   });
-  (async function checarAssinatura(){
+  async function checarStatusAssinatura(){
     let email='';
     try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) email=(JSON.parse(raw).email||''); }catch(e){}
-    if(!email){ PAGAMENTO_CHECADO=true; atualizarAvisosBloqueio(); return; }
+    if(!email) return false;
     try{
       const res=await fetch('/api/status?email='+encodeURIComponent(email));
       const data=await res.json();
-      ASSINANTE=!!data.pago;
-    }catch(e){ ASSINANTE=false; }
+      return !!data.pago;
+    }catch(e){ return false; }
+  }
+  (async function(){
+    let email='';
+    try{ const raw=localStorage.getItem('tres-poderes-lead'); if(raw) email=(JSON.parse(raw).email||''); }catch(e){}
+    if(!email){ PAGAMENTO_CHECADO=true; atualizarAvisosBloqueio(); return; }
+    ASSINANTE = await checarStatusAssinatura();
     PAGAMENTO_CHECADO=true;
     atualizarAvisosBloqueio();
   })();
@@ -3021,6 +3033,27 @@ document.addEventListener('focusout', function(e){
   }
   document.getElementById('treinoLockBtn').addEventListener('click', mostrarPaywall);
   document.getElementById('leisLockBtn').addEventListener('click', mostrarPaywall);
+  document.getElementById('jaAssineiBtn').addEventListener('click', async function(){
+    const btn=this, msg=document.getElementById('jaAssineiMsg');
+    btn.disabled=true; btn.textContent='Verificando...';
+    msg.style.display='none';
+    let ok=false;
+    for(let tentativa=0; tentativa<4 && !ok; tentativa++){
+      if(tentativa>0) await new Promise(r=>setTimeout(r,2500));
+      ok = await checarStatusAssinatura();
+    }
+    btn.disabled=false; btn.textContent='Já assinei, verificar agora';
+    msg.style.display='block';
+    if(ok){
+      ASSINANTE=true; PAGAMENTO_CHECADO=true; atualizarAvisosBloqueio();
+      msg.style.color='var(--good)';
+      msg.textContent='Confirmado! Pode fechar e usar o treino.';
+      setTimeout(fecharPaywall, 1400);
+    } else {
+      msg.style.color='var(--dim)';
+      msg.textContent='Ainda não encontrei a confirmação. Se acabou de pagar, espera um minuto e tenta de novo.';
+    }
+  });
 
   (function initInstallBanner(){
     const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
