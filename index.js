@@ -531,8 +531,11 @@ var HTML = `<!DOCTYPE html>
       <div class="body">
         <b>Assine e treine no seu ponto exato, todos os dias</b>
         <p>Gera exercícios todo dia mirando exatamente o seu ponto mais fraco entre raciocínio, discernimento e influência, a partir do seu próprio diagnóstico. Não é genérico.</p>
-        <button id="treinoLockBtn">Ver planos →</button>
-        <div style="font-size:11px; color:var(--dim); margin-top:8px;">Já é assinante? <a href="#" class="abrirRecuperarLink2" style="color:var(--brass);">Recuperar acesso</a></div>
+        <div class="btn-row" style="margin-top:0;">
+          <button id="treinoLockBtn">Ver planos →</button>
+          <button class="abrirRecuperarLink2" style="background:none; border:1px solid var(--brass-dim); color:var(--brass);
+            font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:10px 16px; border-radius:8px;">Já sou assinante</button>
+        </div>
       </div>
     </div>
 
@@ -663,8 +666,11 @@ var HTML = `<!DOCTYPE html>
       <div class="body">
         <b>Assine e domine as leis universais</b>
         <p>Os cinco pilares do livro completos: Lei de Três, Lei da Oitava, Lei do Retorno, os Três Centros, e os Quatro Estados de consciência.</p>
-        <button id="leisLockBtn">Ver planos →</button>
-        <div style="font-size:11px; color:var(--dim); margin-top:8px;">Já é assinante? <a href="#" class="abrirRecuperarLink2" style="color:var(--brass);">Recuperar acesso</a></div>
+        <div class="btn-row" style="margin-top:0;">
+          <button id="leisLockBtn">Ver planos →</button>
+          <button class="abrirRecuperarLink2" style="background:none; border:1px solid var(--brass-dim); color:var(--brass);
+            font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:10px 16px; border-radius:8px;">Já sou assinante</button>
+        </div>
       </div>
     </div>
 
