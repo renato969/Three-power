@@ -3753,7 +3753,42 @@ async function handleKiwify(request, env) {
     const pago = /aprovad|paid|approv/i.test(String(evento));
     const revogado = /reembols|refund|chargeback|cancel/i.test(String(evento));
     if (pago) {
+      const jaEstavaAtivo = await env.LEADS.get(chave, { type: "json" }).then((v) => v && v.status === "ativo").catch(() => false);
       await env.LEADS.put(chave, JSON.stringify({ status: "ativo", evento, atualizadoEm: new Date().toISOString() }));
+      if (!jaEstavaAtivo && env.BREVO_API_KEY && env.BREVO_FROM_EMAIL) {
+        const nome = (body.Customer && (body.Customer.full_name || body.Customer.first_name || body.Customer.name)) ||
+          (body.customer && (body.customer.full_name || body.customer.first_name || body.customer.name)) || "";
+        const token = gerarTokenMagico();
+        await env.LEADS.put("magic:" + token, JSON.stringify({ email: emailNorm }), { expirationTtl: 86400 });
+        const link = url.origin + "/?magic=" + token;
+        try {
+          await fetch(BREVO_API_URL, {
+            method: "POST",
+            headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+            body: JSON.stringify({
+              sender: { email: env.BREVO_FROM_EMAIL, name: env.BREVO_FROM_NAME || "Três Poderes" },
+              to: [{ email: emailNorm, name: nome || undefined }],
+              subject: "Assinatura confirmada, seu acesso está pronto",
+              htmlContent: "<p>" + (nome ? "Oi, " + nome + "." : "Oi.") + "</p><p>Sua assinatura do Três Poderes foi confirmada. Clique no link abaixo para entrar no seu treino agora mesmo.</p><p><a href=\"" + link + "\">" + link + "</a></p><p>O link vale por 24 horas. Se expirar, é só pedir um novo dentro do app, em \"Já sou assinante\".</p>"
+            })
+          });
+        } catch (e) { /* nao bloqueia o webhook por falha de email */ }
+        try {
+          await fetch("https://api.brevo.com/v3/contacts/" + encodeURIComponent(emailNorm), {
+            method: "PUT",
+            headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+            body: JSON.stringify({ listIds: [4], unlinkListIds: [3] })
+          });
+        } catch (e) {
+          try {
+            await fetch("https://api.brevo.com/v3/contacts", {
+              method: "POST",
+              headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+              body: JSON.stringify({ email: emailNorm, listIds: [4], updateEnabled: true })
+            });
+          } catch (e2) { /* nao bloqueia o webhook por falha de sincronizacao */ }
+        }
+      }
     } else if (revogado) {
       await env.LEADS.put(chave, JSON.stringify({ status: "revogado", evento, atualizadoEm: new Date().toISOString() }));
     }
@@ -3860,6 +3895,74 @@ async function handleStatus(request, env) {
 }
 __name(handleStatus, "handleStatus");
 
+function eixoMaisFraco(resumo) {
+  const eixos = [
+    ["raciocinio", "Raciocínio", resumo.raciocinio],
+    ["discernimento", "Discernimento", resumo.discernimento],
+    ["influencia", "Influência", resumo.influencia]
+  ].filter((e) => typeof e[2] === "number");
+  if (!eixos.length) return null;
+  eixos.sort((a, b) => a[2] - b[2]);
+  return eixos[0];
+}
+__name(eixoMaisFraco, "eixoMaisFraco");
+
+function pct(v) {
+  return typeof v === "number" ? Math.round((v / 7) * 100) + "%" : "sem dados ainda";
+}
+__name(pct, "pct");
+
+async function enviarResumoSemanal(env, email, resumo, nome) {
+  const foco = eixoMaisFraco(resumo);
+  const focoTxt = foco ? foco[1] : null;
+  const html = "<p>" + (nome ? "Oi, " + nome + "." : "Oi.") + "</p>" +
+    "<p>Aqui está o seu status no Três Poderes esta semana:</p>" +
+    "<ul>" +
+    "<li>Raciocínio: " + pct(resumo.raciocinio) + "</li>" +
+    "<li>Discernimento: " + pct(resumo.discernimento) + "</li>" +
+    "<li>Influência: " + pct(resumo.influencia) + "</li>" +
+    "</ul>" +
+    "<p>Sequência atual: " + (resumo.streak || 0) + " dias. Total de rodadas: " + (resumo.totalSessoes || 0) + ".</p>" +
+    (focoTxt ? "<p><strong>Para começar essa semana, foque em " + focoTxt + "</strong>, é o seu ponto mais fraco agora. O treino já vai gerar exercícios pra isso assim que você abrir o app.</p>" : "<p>Ainda não tenho dados suficientes pra apontar um foco. Faz uma rodada esta semana.</p>") +
+    "<p><a href=\"https://trespoderes.app/\">Abrir o treino</a></p>";
+  try {
+    await fetch(BREVO_API_URL, {
+      method: "POST",
+      headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({
+        sender: { email: env.BREVO_FROM_EMAIL, name: env.BREVO_FROM_NAME || "Três Poderes" },
+        to: [{ email, name: nome || undefined }],
+        subject: "Seu resumo da semana, e onde focar agora",
+        htmlContent: html
+      })
+    });
+  } catch (e) { /* segue pro proximo, um erro nao trava o restante */ }
+}
+__name(enviarResumoSemanal, "enviarResumoSemanal");
+
+async function rodarResumoSemanal(env) {
+  if (!env.LEADS || !env.BREVO_API_KEY || !env.BREVO_FROM_EMAIL) return;
+  let cursor;
+  do {
+    const lista = await env.LEADS.list({ prefix: "pago:", cursor });
+    for (const item of lista.keys) {
+      const email = item.name.slice("pago:".length);
+      try {
+        const pagoInfo = await env.LEADS.get(item.name, { type: "json" });
+        if (!pagoInfo || pagoInfo.status !== "ativo") continue;
+        const progRaw = await env.LEADS.get("progresso:" + email, { type: "json" });
+        if (!progRaw || !progRaw.resumo) continue;
+        const leadRaw = await env.LEADS.get("lead:" + email, { type: "json" });
+        const nome = leadRaw && leadRaw.nome ? leadRaw.nome.split(" ")[0] : "";
+        await enviarResumoSemanal(env, email, progRaw.resumo, nome);
+      } catch (e) { /* segue pro proximo assinante */ }
+    }
+    cursor = lista.list_complete ? undefined : lista.cursor;
+  } while (cursor);
+}
+__name(rodarResumoSemanal, "rodarResumoSemanal");
+
+
 async function handleLead(request, env) {
   if (request.method !== "POST") return json({ error: "use POST" }, 405);
   let body;
@@ -3902,6 +4005,28 @@ async function handleLead(request, env) {
   const primeiroNome = nome.split(" ")[0];
   const centro = resumo.centro || "";
   const quebra = resumo.quebra || "";
+
+  const NOTA_EIXO_LABEL = {
+    "Dó": "Raciocínio", "Ré": "Raciocínio", "Mi": "Raciocínio",
+    "Fá": "Discernimento", "Sol": "Discernimento",
+    "Lá": "Influência", "Si": "Influência"
+  };
+  const eixoFraco = NOTA_EIXO_LABEL[quebra] || "";
+  if (env.BREVO_API_KEY && eixoFraco) {
+    try {
+      await fetch("https://api.brevo.com/v3/contacts", {
+        method: "POST",
+        headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+        body: JSON.stringify({
+          email,
+          attributes: { NOME: nome, EIXO_FRACO: eixoFraco },
+          listIds: [3],
+          updateEnabled: true
+        })
+      });
+    } catch (e) { /* nao bloqueia o envio do PDF por falha de sincronizacao */ }
+  }
+
   const html = '<div style="font-family:Georgia,serif; max-width:520px; margin:0 auto; color:#241b14;"><h2 style="color:#8a7538;">Sua anamnese do Eneagrama</h2><p>Oi, ' + primeiroNome + ".</p><p>Seu resultado no teste do Eneagrama de Gurdjieff, do app <strong>Tr\xEAs Poderes</strong>, est\xE1 pronto e em anexo, em PDF.</p>" + (centro ? "<p><strong>Centro predominante:</strong> " + centro + "<br><strong>Onde sua oitava quebra:</strong> " + quebra + "</p>" : "") + '<p>O relat\xF3rio traz a ficha completa do seu centro, a origem prov\xE1vel da quebra e o que fazer a partir dela.</p><p style="margin-top:28px; font-size:13px; color:#8a7538;">Tr\xEAs Poderes \u2014 baseado no livro de Francisco Vasquez</p></div>';
   try {
     const res = await fetch(BREVO_API_URL, {
@@ -4000,12 +4125,20 @@ var index_default = {
     if (url.pathname === "/icon-180.png" || url.pathname === "/apple-touch-icon.png") {
       return new Response(b64ParaBytes(ICON_180_B64), { headers: { "content-type": "image/png", "cache-control": "public, max-age=604800" } });
     }
+    if (url.pathname === "/api/cron-teste-resumo") {
+      if (url.searchParams.get("chave") !== (env.KIWIFY_WEBHOOK_TOKEN || "")) return json({ error: "sem permissao" }, 401);
+      await rodarResumoSemanal(env);
+      return json({ ok: true, mensagem: "resumo semanal disparado manualmente" });
+    }
     return new Response(HTML, {
       headers: {
         "content-type": "text/html; charset=utf-8",
         "cache-control": "no-store, no-cache, must-revalidate"
       }
     });
+  },
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(rodarResumoSemanal(env));
   }
 };
 export {
