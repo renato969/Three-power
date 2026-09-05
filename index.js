@@ -3502,7 +3502,7 @@ var LP_HTML = `<!DOCTYPE html>
     <div class="wrap hero-inner">
       <div class="eyebrow">Teste gratuito \xB7 4 minutos</div>
       <h1>Voc\xEA sabe que precisa evoluir.<br>S\xF3 n\xE3o sabe exatamente onde.</h1>
-      <p class="hero-sub">Voc\xEA evolui quando pensa com clareza, toma decis\xF5es fundamentadas, e faz essas decis\xF5es acontecerem de verdade, seja na sua vida, na sua empresa, ou na forma como voc\xEA influencia quem est\xE1 ao seu redor.</p>
+      <p class="hero-sub">Voc\xEA sente que devia estar mais longe do que est\xE1, e n\xE3o sabe dizer exatamente por qu\xEA.</p>
       <p class="hero-sub" style="margin-bottom:14px;">E, nesse sentido, os tr\xEAs pontos abaixo s\xE3o determinantes:</p>
       <ul class="hero-list">
         <li><strong>Racioc\xEDnio.</strong> Quando voc\xEA n\xE3o enxerga as op\xE7\xF5es antes de agir</li>
@@ -3516,6 +3516,7 @@ var LP_HTML = `<!DOCTYPE html>
   </section>
   <div class="authority">
     <p>Baseado em <strong>Seus Tr\xEAs Poderes</strong>, de <strong>Chico Vasquez</strong>. Racioc\xEDnio, discernimento e influ\xEAncia.</p>
+    <p style="margin-top:6px;">Mais de 5 anos ensinando esse m\xE9todo, uma vida inteira estudando Gurdjieff, e quase 10 mil alunos j\xE1 formados.</p>
   </div>
   <section>
     <div class="wrap">
@@ -3555,6 +3556,7 @@ var LP_HTML = `<!DOCTYPE html>
     </div>
   </section>
   <div class="depoimentos wrap" style="border-top:none; margin-top:0; padding-top:24px;">
+    <div class="video-cap" style="margin-bottom:14px;">Quem j\xE1 fez o treinamento de Chico Vasquez</div>
     <div class="dep-grid dep-grid-1">
       <div class="dep-card">
         <p class="dep-quote">Uma das aulas mais esclarecedoras e anal\xEDticas que j\xE1 assisti na vida. Me fez repensar diversas atitudes e falhas em execu\xE7\xE3o que me trouxeram resultados ruins. Essa aula mudou minha vida.</p>
@@ -3677,6 +3679,7 @@ var LP_HTML = `<!DOCTYPE html>
     </div>
   </section>
   <div class="depoimentos wrap">
+    <div class="video-cap" style="margin-bottom:14px;">Mais quem j\xE1 fez o treinamento</div>
     <div class="dep-grid dep-grid-2">
       <div class="dep-card">
         <p class="dep-quote">Estudo o Eneagrama e o conte\xFAdo deste curso est\xE1 me trazendo os fundamentos que faltavam. O universo entregando o que eu precisava saber.</p>
@@ -3691,9 +3694,10 @@ var LP_HTML = `<!DOCTYPE html>
 
   <section class="cta-final" id="comecar">
     <div class="wrap">
+      <div class="eyebrow" style="margin-bottom:16px;">O app acabou de ser lan\xE7ado</div>
       <h2>Quatro minutos.<br>Uma resposta que voc\xEA j\xE1 sentia, mas n\xE3o tinha nome.</h2>
       <a href="/?ir=enea" class="btn btn-gold btn-wide">4 minutos, a resposta certa daquilo que te bloqueia \u2192</a>
-      <div class="fine">trespoderes.app</div>
+      <div class="fine">Voc\xEA est\xE1 entre os primeiros a entrar, por j\xE1 fazer parte da base de alunos do Chico.</div>
     </div>
   </section>
   <footer>
