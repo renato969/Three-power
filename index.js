@@ -3519,10 +3519,10 @@ var LP_HTML = `<!DOCTYPE html>
       <p class="hero-sub" style="margin-bottom:14px;">E, nesse sentido, os tr\xEAs pontos abaixo s\xE3o determinantes:</p>
       <ul class="hero-list">
         <li><strong>Racioc\xEDnio.</strong> Quando voc\xEA n\xE3o enxerga as op\xE7\xF5es antes de agir</li>
-        <li><strong>Discernimento.</strong> Quando voc\xEA v\xEA as op\xE7\xF5es e n\xE3o decide</li>
+        <li><strong>Discernimento.</strong> Quando voc\xEA v\xEA as op\xE7\xF5es, sabe os pr\xF3s e contras de cada uma, e mesmo assim n\xE3o fecha a decis\xE3o</li>
         <li><strong>Influ\xEAncia.</strong> Quando voc\xEA decide e n\xE3o faz acontecer, nem em voc\xEA, nem no outro</li>
       </ul>
-      <p class="hero-sub" style="margin-top:22px;">Voc\xEA tem um ponto exato onde racioc\xEDnio, discernimento ou influ\xEAncia falham primeiro, antes dos outros dois. O eneagrama de Gurdjieff existe pra apontar esse ponto com precis\xE3o, n\xE3o pra te ensinar teoria.</p>
+      <p class="hero-sub" style="margin-top:22px;">O Teste do Eneagrama de Gurdjieff aponta exatamente onde voc\xEA falha, entre racioc\xEDnio, discernimento e influ\xEAncia. A partir da\xED, \xE9 treinar esse ponto todos os dias at\xE9 virar reflexo.</p>
       <a href="/?ir=enea" class="btn btn-gold">Descobrir o meu em 4 minutos \u2192</a>
       <div class="fine">Gr\xE1tis \xB7 Resultado na hora \xB7 Sem cart\xE3o</div>
     </div>
