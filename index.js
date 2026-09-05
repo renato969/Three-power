@@ -3513,8 +3513,8 @@ var LP_HTML = `<!DOCTYPE html>
     </svg>
     <div class="wrap hero-inner">
       <div class="launch-badge">App rec\xE9m-lan\xE7ado \xB7 acesso antecipado</div>
-      <div class="eyebrow">Teste gratuito \xB7 4 minutos</div>
-      <h1>Voc\xEA sabe que precisa evoluir.<br>S\xF3 n\xE3o sabe exatamente onde.</h1>
+      <div class="eyebrow">Racioc\xEDnio \xB7 Discernimento \xB7 Influ\xEAncia</div>
+      <h1>Algo te bloqueia.<br>Voc\xEA s\xF3 nunca descobriu qual dos tr\xEAs.</h1>
       <p class="hero-sub">Voc\xEA sente que devia estar mais longe do que est\xE1, e n\xE3o sabe dizer exatamente por qu\xEA.</p>
       <p class="hero-sub" style="margin-bottom:14px;">E, nesse sentido, os tr\xEAs pontos abaixo s\xE3o determinantes:</p>
       <ul class="hero-list">
