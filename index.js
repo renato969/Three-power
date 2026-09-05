@@ -3355,6 +3355,9 @@ var LP_HTML = `<!DOCTYPE html>
   .depoimentos{ padding-top:36px; padding-bottom:8px; border-top:1px solid var(--rule); margin-top:8px; }
   .dep-grid{ display:grid; gap:14px; }
   @media (min-width:720px){ .dep-grid{ grid-template-columns:repeat(3,1fr); } }
+  .dep-grid-1{ max-width:520px; margin:0 auto; }
+  @media (min-width:720px){ .dep-grid-1{ grid-template-columns:1fr; } }
+  @media (min-width:720px){ .dep-grid-2{ grid-template-columns:repeat(2,1fr); } }
   .dep-card{ background:var(--panel); border:1px solid var(--rule); border-radius:var(--radius);
     padding:22px 20px; }
   .dep-quote{ font-family:'Fraunces',serif; font-style:italic; font-size:14.5px; line-height:1.6;
@@ -3447,6 +3450,13 @@ var LP_HTML = `<!DOCTYPE html>
     section{ padding:36px 0; }
   }
 
+  .sticky-cta{ position:fixed; left:0; right:0; bottom:0; z-index:60; padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(21,17,13,0.96); backdrop-filter:blur(10px) saturate(1.15); border-top:1px solid var(--rule);
+    transform:translateY(110%); transition:transform .3s ease; }
+  .sticky-cta.show{ transform:translateY(0); }
+  .sticky-cta a{ display:block; text-align:center; padding:13px 18px; font-size:14px; }
+  @media (min-width:720px){ .sticky-cta{ display:none; } }
+
   @media (prefers-reduced-motion:reduce){ .breathe,.choque,.pt{ animation:none !important; } }
 </style>
 </head>
@@ -3504,9 +3514,53 @@ var LP_HTML = `<!DOCTYPE html>
       <div class="fine">Gr\xE1tis \xB7 Resultado na hora \xB7 Sem cart\xE3o</div>
     </div>
   </section>
-
   <div class="authority">
     <p>Baseado em <strong>Seus Tr\xEAs Poderes</strong>, de <strong>Chico Vasquez</strong>. Racioc\xEDnio, discernimento e influ\xEAncia.</p>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <svg class="sec-icon" viewBox="0 0 24 24">
+          <path d="M7 3.5h10l4 5.5-9 11.5L3 9z"/>
+          <path d="M3 9h18"/>
+          <path d="M12 20.5 8.6 9l1.6-5.5"/>
+          <path d="M12 20.5 15.4 9l-1.6-5.5"/>
+        </svg>
+        <span class="eyebrow">Como funciona</span>
+        <h2>Tr\xEAs passos, nessa ordem</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <h3>Voc\xEA faz o teste</h3>
+            <p>Dezesseis perguntas certeiras sobre como voc\xEA pensa, decide e age no dia a dia. Sem certo ou errado, s\xF3 o seu jeito de processar as coisas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <h3>Voc\xEA recebe o diagn\xF3stico</h3>
+            <p>Seu centro predominante, se \xE9 mental, emocional ou corporal, e a etapa exata onde voc\xEA trava. Mais a origem prov\xE1vel e o que fazer a partir disso. Em PDF, no seu email.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <h3>Voc\xEA treina o ponto certo</h3>
+            <p>O app usa o seu resultado para gerar exerc\xEDcios di\xE1rios que miram exatamente onde voc\xEA trava, sem generalidade.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="depoimentos wrap" style="border-top:none; margin-top:0; padding-top:24px;">
+    <div class="dep-grid dep-grid-1">
+      <div class="dep-card">
+        <p class="dep-quote">Uma das aulas mais esclarecedoras e anal\xEDticas que j\xE1 assisti na vida. Me fez repensar diversas atitudes e falhas em execu\xE7\xE3o que me trouxeram resultados ruins. Essa aula mudou minha vida.</p>
+        <div class="dep-nome">Leandro Lima da Silva</div>
+      </div>
+    </div>
   </div>
 
   <div class="explainer wrap">
@@ -3549,7 +3603,6 @@ var LP_HTML = `<!DOCTYPE html>
       <span class="tag">Psic\xF3logos e terapeutas</span>
     </div>
   </div>
-
   <div class="video-block wrap">
     <div class="video-cap">Chico Vasquez explica o app</div>
     <div class="video-frame" id="videoFrame">
@@ -3578,80 +3631,6 @@ var LP_HTML = `<!DOCTYPE html>
   })();
   </script>
 
-  <div class="depoimentos wrap">
-    <div class="dep-grid">
-      <div class="dep-card">
-        <p class="dep-quote">Uma das aulas mais esclarecedoras e anal\xEDticas que j\xE1 assisti na vida. Me fez repensar diversas atitudes e falhas em execu\xE7\xE3o que me trouxeram resultados ruins. Essa aula mudou minha vida.</p>
-        <div class="dep-nome">Leandro Lima da Silva</div>
-      </div>
-      <div class="dep-card">
-        <p class="dep-quote">Estudo o Eneagrama e o conte\xFAdo deste curso est\xE1 me trazendo os fundamentos que faltavam. O universo entregando o que eu precisava saber.</p>
-        <div class="dep-nome">Anelore Coelho</div>
-      </div>
-      <div class="dep-card">
-        <p class="dep-quote">Compreender por que os conflitos acontecem em nossa vida. Enquanto dormimos presos, reagimos a tudo de forma autom\xE1tica. Quando conscientes, as coisas acontecem mas n\xE3o nos atingem.</p>
-        <div class="dep-nome">Gelma Maria Leit\xE3o Barros</div>
-      </div>
-    </div>
-  </div>
-
-  <section style="padding-top:36px;">
-    <div class="wrap">
-      <div class="whw">
-        <div class="whw-item">
-          <span class="eyebrow">Por qu\xEA</span>
-          <p>Se voc\xEA sente que podia chegar mais longe, mas n\xE3o consegue e n\xE3o entende exatamente por qu\xEA, esta ferramenta, baseada nas leis universais estudadas por Gurdjieff, vai te ajudar a encontrar exatamente os pontos que voc\xEA precisa melhorar.</p>
-        </div>
-        <div class="whw-item">
-          <span class="eyebrow">Como</span>
-          <p>Pelo eneagrama de Gurdjieff, um sistema com mais de cem anos que mapeia os tr\xEAs centros do ser humano e as etapas de qualquer processo, at\xE9 localizar exatamente onde \xE9 o seu.</p>
-        </div>
-        <div class="whw-item">
-          <span class="eyebrow">O qu\xEA</span>
-          <p>Um teste de quatro minutos, um diagn\xF3stico completo por email, e um treino di\xE1rio que trabalha s\xF3 o seu ponto fraco, n\xE3o o de todo mundo.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <svg class="sec-icon" viewBox="0 0 24 24">
-          <path d="M7 3.5h10l4 5.5-9 11.5L3 9z"/>
-          <path d="M3 9h18"/>
-          <path d="M12 20.5 8.6 9l1.6-5.5"/>
-          <path d="M12 20.5 15.4 9l-1.6-5.5"/>
-        </svg>
-        <span class="eyebrow">Como funciona</span>
-        <h2>Tr\xEAs passos, nessa ordem</h2>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-n">1</div>
-          <div class="step-body">
-            <h3>Voc\xEA faz o teste</h3>
-            <p>Dezesseis perguntas certeiras sobre como voc\xEA pensa, decide e age no dia a dia. Sem certo ou errado, s\xF3 o seu jeito de processar as coisas.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-n">2</div>
-          <div class="step-body">
-            <h3>Voc\xEA recebe o diagn\xF3stico</h3>
-            <p>Seu centro predominante, se \xE9 mental, emocional ou corporal, e a etapa exata onde voc\xEA trava. Mais a origem prov\xE1vel e o que fazer a partir disso. Em PDF, no seu email.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-n">3</div>
-          <div class="step-body">
-            <h3>Voc\xEA treina o ponto certo</h3>
-            <p>O app usa o seu resultado para gerar exerc\xEDcios di\xE1rios que miram exatamente onde voc\xEA trava, sem generalidade.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section>
     <div class="wrap" style="max-width:560px;">
       <div class="sec-head">
@@ -3676,6 +3655,9 @@ var LP_HTML = `<!DOCTYPE html>
       </div>
     </div>
   </section>
+  <div class="wrap" style="text-align:center; padding:28px 24px 4px;">
+    <p style="font-family:'Fraunces',serif; font-style:italic; font-size:15px; color:var(--dim); max-width:480px; margin:0 auto;">Baseado nas leis universais estudadas por Gurdjieff, esse mapa mostra exatamente onde o seu processo perde for\xE7a.</p>
+  </div>
 
   <section>
     <div class="wrap" style="max-width:560px;">
@@ -3694,6 +3676,18 @@ var LP_HTML = `<!DOCTYPE html>
       </div>
     </div>
   </section>
+  <div class="depoimentos wrap">
+    <div class="dep-grid dep-grid-2">
+      <div class="dep-card">
+        <p class="dep-quote">Estudo o Eneagrama e o conte\xFAdo deste curso est\xE1 me trazendo os fundamentos que faltavam. O universo entregando o que eu precisava saber.</p>
+        <div class="dep-nome">Anelore Coelho</div>
+      </div>
+      <div class="dep-card">
+        <p class="dep-quote">Compreender por que os conflitos acontecem em nossa vida. Enquanto dormimos presos, reagimos a tudo de forma autom\xE1tica. Quando conscientes, as coisas acontecem mas n\xE3o nos atingem.</p>
+        <div class="dep-nome">Gelma Maria Leit\xE3o Barros</div>
+      </div>
+    </div>
+  </div>
 
   <section class="cta-final" id="comecar">
     <div class="wrap">
@@ -3702,11 +3696,26 @@ var LP_HTML = `<!DOCTYPE html>
       <div class="fine">trespoderes.app</div>
     </div>
   </section>
-
   <footer>
     <p>TR\xCAS PODERES \xB7 BASEADO NO LIVRO DE CHICO VASQUEZ</p>
   </footer>
-
+  <div class="sticky-cta" id="stickyCta">
+    <a href="/?ir=enea" class="btn btn-gold" style="width:100%;">Descobrir o meu em 4 minutos →</a>
+  </div>
+  <script>
+  (function(){
+    var bar = document.getElementById('stickyCta');
+    var hero = document.querySelector('.hero');
+    if(!bar || !hero) return;
+    var limite = hero.offsetHeight;
+    var visivel = false;
+    window.addEventListener('scroll', function(){
+      var passou = window.scrollY > limite;
+      if(passou && !visivel){ bar.classList.add('show'); visivel = true; }
+      else if(!passou && visivel){ bar.classList.remove('show'); visivel = false; }
+    }, { passive:true });
+  })();
+  </script>
 </body>
 </html>
 `;
