@@ -3298,20 +3298,21 @@ var LP_HTML = `<!DOCTYPE html>
   .tags-row{ display:flex; gap:9px; justify-content:center; flex-wrap:wrap; max-width:520px; margin:0 auto; }
   .tags-row .tag{ font-size:12px; padding:7px 14px; }
 
-  /* ===== V\xCDDEO DO CHICO ===== */
+  /* ===== VÍDEO DO CHICO ===== */
   .video-block{ padding-top:34px; padding-bottom:6px; }
   .video-cap{ text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px;
     color:var(--dim); margin-bottom:14px; letter-spacing:.04em; }
   .video-frame{ position:relative; width:100%; max-width:640px; margin:0 auto; aspect-ratio:16/9;
     background:var(--panel-2); border:1px solid var(--rule); border-radius:var(--radius);
-    display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .video-frame .play{ width:56px; height:56px; border-radius:50%; background:rgba(201,162,75,0.14);
-    border:1px solid var(--brass-dim); display:flex; align-items:center; justify-content:center; }
+    display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; }
+  .video-frame .thumb{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .video-frame .scrim{ position:absolute; inset:0; background:rgba(21,17,13,0.35); }
+  .video-frame .play{ width:56px; height:56px; border-radius:50%; background:rgba(201,162,75,0.18);
+    border:1px solid var(--brass-dim); display:flex; align-items:center; justify-content:center;
+    position:relative; z-index:2; transition:transform .2s ease, background .2s ease; }
+  .video-frame:hover .play{ transform:scale(1.08); background:rgba(201,162,75,0.3); }
   .video-frame .play svg{ width:20px; height:20px; fill:var(--brass); margin-left:3px; }
-  .video-frame .ph-text{ position:absolute; bottom:16px; left:0; right:0; text-align:center;
-    font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:.06em; }
-  /* Quando o v\xEDdeo real entrar, troca este bloco por um <iframe> do YouTube/Vimeo
-     e remove .video-frame, .play e .ph-text */
+  .video-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
 
   /* ===== O QUE \xC9 O ENEAGRAMA ===== */
   .explainer{ padding-top:40px; padding-bottom:40px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
@@ -3351,7 +3352,7 @@ var LP_HTML = `<!DOCTYPE html>
     font-style:normal; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--brass-dim); }
 
   /* ===== DEPOIMENTOS ===== */
-  .depoimentos{ padding:8px 0 0; }
+  .depoimentos{ padding-top:36px; padding-bottom:8px; border-top:1px solid var(--rule); margin-top:8px; }
   .dep-grid{ display:grid; gap:14px; }
   @media (min-width:720px){ .dep-grid{ grid-template-columns:repeat(3,1fr); } }
   .dep-card{ background:var(--panel); border:1px solid var(--rule); border-radius:var(--radius);
@@ -3442,6 +3443,8 @@ var LP_HTML = `<!DOCTYPE html>
     .explainer{ padding-top:32px; padding-bottom:32px; }
     .video-block{ padding-top:26px; padding-bottom:6px; }
     .who{ padding-top:24px; padding-bottom:6px; }
+    .depoimentos{ padding-top:28px; padding-bottom:4px; }
+    section{ padding:36px 0; }
   }
 
   @media (prefers-reduced-motion:reduce){ .breathe,.choque,.pt{ animation:none !important; } }
@@ -3549,12 +3552,31 @@ var LP_HTML = `<!DOCTYPE html>
 
   <div class="video-block wrap">
     <div class="video-cap">Chico Vasquez explica o app</div>
-    <div class="video-frame">
-      <iframe src="https://www.youtube.com/embed/0KM5n6iGLJU" title="Chico Vasquez explica o Tr\xEAs Poderes"
-        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen style="position:absolute; inset:0; width:100%; height:100%; border:0;"></iframe>
+    <div class="video-frame" id="videoFrame">
+      <img class="thumb" src="https://img.youtube.com/vi/0KM5n6iGLJU/hqdefault.jpg" alt="Chico Vasquez explica o Três Poderes" loading="lazy">
+      <div class="scrim"></div>
+      <div class="play">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
     </div>
   </div>
+  <script>
+  (function(){
+    var frame = document.getElementById('videoFrame');
+    if(!frame) return;
+    frame.addEventListener('click', function(){
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/0KM5n6iGLJU?autoplay=1';
+      iframe.title = 'Chico Vasquez explica o Três Poderes';
+      iframe.setAttribute('frameborder','0');
+      iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      iframe.setAttribute('allowfullscreen','');
+      frame.innerHTML = '';
+      frame.appendChild(iframe);
+      frame.style.cursor = 'default';
+    }, { once:true });
+  })();
+  </script>
 
   <div class="depoimentos wrap">
     <div class="dep-grid">
@@ -3573,7 +3595,7 @@ var LP_HTML = `<!DOCTYPE html>
     </div>
   </div>
 
-  <section style="padding-top:8px;">
+  <section style="padding-top:36px;">
     <div class="wrap">
       <div class="whw">
         <div class="whw-item">
