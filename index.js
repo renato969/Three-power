@@ -3502,14 +3502,14 @@ var LP_HTML = `<!DOCTYPE html>
     <div class="wrap hero-inner">
       <div class="eyebrow">Teste gratuito \xB7 4 minutos</div>
       <h1>Voc\xEA sabe que precisa evoluir.<br>S\xF3 n\xE3o sabe exatamente onde.</h1>
-      <p class="hero-sub">O posicionamento e a evolu\xE7\xE3o de todo ser humano dependem de pensar com clareza, tomar decis\xF5es fundamentadas e fazer essas decis\xF5es acontecerem de verdade, seja para a sua pr\xF3pria evolu\xE7\xE3o, para a sua empresa, ou simplesmente para influenciar outras pessoas.</p>
+      <p class="hero-sub">Voc\xEA evolui quando pensa com clareza, toma decis\xF5es fundamentadas, e faz essas decis\xF5es acontecerem de verdade, seja na sua vida, na sua empresa, ou na forma como voc\xEA influencia quem est\xE1 ao seu redor.</p>
       <p class="hero-sub" style="margin-bottom:14px;">E, nesse sentido, os tr\xEAs pontos abaixo s\xE3o determinantes:</p>
       <ul class="hero-list">
         <li><strong>Racioc\xEDnio.</strong> Quando voc\xEA n\xE3o enxerga as op\xE7\xF5es antes de agir</li>
         <li><strong>Discernimento.</strong> Quando voc\xEA v\xEA as op\xE7\xF5es e n\xE3o decide</li>
         <li><strong>Influ\xEAncia.</strong> Quando voc\xEA decide e n\xE3o faz acontecer, nem em voc\xEA, nem no outro</li>
       </ul>
-      <p class="hero-sub" style="margin-top:22px;">O eneagrama de Gurdjieff tra\xE7a a anamnese completa dos seus tr\xEAs poderes. Baseado em leis universais, ele avalia sua capacidade de racioc\xEDnio, discernimento e influ\xEAncia, e mostra exatamente onde voc\xEA est\xE1 falhando.</p>
+      <p class="hero-sub" style="margin-top:22px;">Voc\xEA tem um ponto exato onde racioc\xEDnio, discernimento ou influ\xEAncia falham primeiro, antes dos outros dois. O eneagrama de Gurdjieff existe pra apontar esse ponto com precis\xE3o, n\xE3o pra te ensinar teoria.</p>
       <a href="/?ir=enea" class="btn btn-gold">Descobrir o meu em 4 minutos \u2192</a>
       <div class="fine">Gr\xE1tis \xB7 Resultado na hora \xB7 Sem cart\xE3o</div>
     </div>
@@ -3591,7 +3591,7 @@ var LP_HTML = `<!DOCTYPE html>
       <div class="legend-item"><span class="legend-dot hept"></span>Sete pontas, a Lei da Oitava</div>
     </div>
 
-    <p>No livro <strong>"Seus Tr\xEAs Poderes"</strong> de Chico Vasquez, esse mapa \xE9 aplicado ao processo de pensar, decidir e agir. \xC9 esse mesmo mapa que o teste usa para encontrar exatamente onde o seu processo perde for\xE7a.</p>
+    <p>No livro <strong>"Seus Tr\xEAs Poderes"</strong> de Chico Vasquez, esse mapa \xE9 aplicado ao processo de pensar, decidir e agir. \xC9 esse mesmo mapa que o teste usa pra apontar, com nome e sobrenome, exatamente onde voc\xEA trava primeiro.</p>
   </div>
 
   <div class="who wrap">
@@ -3656,7 +3656,7 @@ var LP_HTML = `<!DOCTYPE html>
     </div>
   </section>
   <div class="wrap" style="text-align:center; padding:28px 24px 4px;">
-    <p style="font-family:'Fraunces',serif; font-style:italic; font-size:15px; color:var(--dim); max-width:480px; margin:0 auto;">Baseado nas leis universais estudadas por Gurdjieff, esse mapa mostra exatamente onde o seu processo perde for\xE7a.</p>
+    <p style="font-family:'Fraunces',serif; font-style:italic; font-size:15px; color:var(--dim); max-width:480px; margin:0 auto;">Isso n\xE3o \xE9 teoria solta. \xC9 o motivo exato pelo qual voc\xEA decide e n\xE3o sai do lugar, ou enxerga a sa\xEDda e n\xE3o decide.</p>
   </div>
 
   <section>
