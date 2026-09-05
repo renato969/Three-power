@@ -3292,6 +3292,18 @@ var LP_HTML = `<!DOCTYPE html>
   .authority p{ margin:0; font-size:13px; color:var(--dim); }
   .authority strong{ color:var(--parchment); font-weight:600; }
 
+  .stats-row{ display:flex; justify-content:center; gap:0; flex-wrap:wrap; margin-top:16px; }
+  .stat{ padding:0 22px; border-left:1px solid var(--rule); }
+  .stat:first-child{ border-left:none; }
+  .stat-num{ font-family:'Fraunces',serif; font-weight:600; font-size:22px; color:var(--brass); line-height:1.1; }
+  .stat-label{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.04em;
+    color:var(--dim); text-transform:uppercase; margin-top:3px; max-width:100px; }
+  @media (max-width:479px){ .stat{ padding:0 14px; } .stat-num{ font-size:19px; } }
+
+  .launch-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:var(--brass);
+    padding:5px 12px; border-radius:20px; margin-bottom:14px; }
+
   /* ===== PRA QUEM \xC9 ===== */
   .who{ padding-top:30px; padding-bottom:6px; text-align:center; }
   .who .eyebrow{ display:block; margin-bottom:14px; }
@@ -3500,6 +3512,7 @@ var LP_HTML = `<!DOCTYPE html>
       </g>
     </svg>
     <div class="wrap hero-inner">
+      <div class="launch-badge">App rec\xE9m-lan\xE7ado \xB7 acesso antecipado</div>
       <div class="eyebrow">Teste gratuito \xB7 4 minutos</div>
       <h1>Voc\xEA sabe que precisa evoluir.<br>S\xF3 n\xE3o sabe exatamente onde.</h1>
       <p class="hero-sub">Voc\xEA sente que devia estar mais longe do que est\xE1, e n\xE3o sabe dizer exatamente por qu\xEA.</p>
@@ -3516,7 +3529,11 @@ var LP_HTML = `<!DOCTYPE html>
   </section>
   <div class="authority">
     <p>Baseado em <strong>Seus Tr\xEAs Poderes</strong>, de <strong>Chico Vasquez</strong>. Racioc\xEDnio, discernimento e influ\xEAncia.</p>
-    <p style="margin-top:6px;">Mais de 5 anos ensinando esse m\xE9todo, uma vida inteira estudando Gurdjieff, e quase 10 mil alunos j\xE1 formados.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">5+</div><div class="stat-label">anos ensinando o m\xE9todo</div></div>
+      <div class="stat"><div class="stat-num">10 mil</div><div class="stat-label">alunos j\xE1 formados</div></div>
+      <div class="stat"><div class="stat-num">Vida toda</div><div class="stat-label">estudando Gurdjieff</div></div>
+    </div>
   </div>
   <section>
     <div class="wrap">
@@ -3694,7 +3711,7 @@ var LP_HTML = `<!DOCTYPE html>
 
   <section class="cta-final" id="comecar">
     <div class="wrap">
-      <div class="eyebrow" style="margin-bottom:16px;">O app acabou de ser lan\xE7ado</div>
+      <div class="launch-badge">O app acabou de ser lan\xE7ado</div>
       <h2>Quatro minutos.<br>Uma resposta que voc\xEA j\xE1 sentia, mas n\xE3o tinha nome.</h2>
       <a href="/?ir=enea" class="btn btn-gold btn-wide">4 minutos, a resposta certa daquilo que te bloqueia \u2192</a>
       <div class="fine">Voc\xEA est\xE1 entre os primeiros a entrar, por j\xE1 fazer parte da base de alunos do Chico.</div>
